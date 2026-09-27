@@ -1,0 +1,16 @@
+# print – counting loop and messages
+
+start {
+    int i
+    int max
+
+    max = 5
+    i = 1
+
+    print "Counting to {}"(max)
+    while (i lte max) {
+        print "  step {} of {}"(i, max)
+        i = i + 1
+    }
+    print "done"
+}

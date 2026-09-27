@@ -1,0 +1,11 @@
+class Box <T> {
+    public
+    T value
+    public
+    create (T v) {
+        value = v
+    }
+}
+start {
+    Box a
+}

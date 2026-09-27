@@ -1,0 +1,11 @@
+start {
+    try {
+        raise (B)
+    }
+    except (A) {
+        print "A"
+    }
+    except (B) {
+        print "B"
+    }
+}

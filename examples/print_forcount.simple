@@ -1,0 +1,6 @@
+start {
+    int i
+    for (4 as int i) {
+        print "n={}"(i)
+    }
+}

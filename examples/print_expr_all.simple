@@ -1,0 +1,49 @@
+# Expressions – combined showcase
+
+start {
+    int a
+    int b
+    int c
+
+    a = 7
+    b = 4
+    c = 2
+
+    print "=== expression showcase ==="
+    print "operands: a={} b={} c={}"(a, b, c)
+
+    print "--- arithmetic ---"
+    print "  a+b   = {}"(a + b)
+    print "  a-b   = {}"(a - b)
+    print "  a*b   = {}"(a * b)
+    print "  a/b   = {}"(a / b)
+    print "  a%b   = {}"(a % b)
+    print "  a+b*c = {}"(a + b * c)
+    print "  (a+b)*c = {}"((a + b) * c)
+
+    print "--- comparisons (via if) ---"
+    if (a gt b) {
+        print "  a gt b"
+    }
+    if (b lt a) {
+        print "  b lt a"
+    }
+    if (a neq b) {
+        print "  a neq b"
+    }
+    if (c equ 2) {
+        print "  c equ 2"
+    }
+    if (a gte 7) {
+        print "  a gte 7"
+    }
+    if (b lte 4) {
+        print "  b lte 4"
+    }
+
+    print "--- unary ---"
+    print "  -a = {}"(0 - a)
+    print "  -b = {}"(0 - b)
+
+    print "done"
+}

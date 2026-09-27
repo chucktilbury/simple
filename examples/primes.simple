@@ -1,0 +1,37 @@
+# Prime filter (Sieve-style iterative check)
+# Marks numbers from 2..limit and counts primes.
+
+start {
+    int limit
+    int n
+    int d
+    int is_prime
+    int count
+    int rem
+
+    limit = 30
+    count = 0
+    n = 2
+
+    while (n lte limit) {
+        is_prime = 1
+        d = 2
+        while (d * d lte n) {
+            rem = n
+            # rem % d via repeated subtraction
+            while (rem gte d) {
+                rem = rem - d
+            }
+            if (rem equ 0) {
+                is_prime = 0
+            }
+            d = d + 1
+        }
+        if (is_prime equ 1) {
+            count = count + 1
+            # n is prime (2,3,5,7,11,13,17,19,23,29 → count becomes 10)
+        }
+        n = n + 1
+    }
+    # count holds number of primes <= limit
+}

@@ -1,0 +1,6 @@
+int triple (int x) {
+    return (x + x + x)
+}
+start {
+    print "{}"(triple(3))
+}

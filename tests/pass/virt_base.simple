@@ -1,0 +1,27 @@
+class Animal {
+    public
+    create () {
+    }
+    public
+    virtual nothing speak () {
+        print "..."
+        return ()
+    }
+}
+class Dog (public Animal) {
+    public
+    create () {
+    }
+    public
+    virtual nothing speak () {
+        print "woof"
+        return ()
+    }
+}
+start {
+    Dog d
+    Animal a
+    d = Dog.create()
+    a = d
+    a.speak()
+}

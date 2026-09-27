@@ -1,0 +1,73 @@
+# Multiple inheritance + print
+# Duck inherits Flyer and Swimmer
+
+namespace Animals {
+    class Flyer {
+        public
+        int altitude
+
+        public
+        create () {
+            altitude = 0
+        }
+
+
+        public
+        nothing fly () {
+            altitude = 100
+            print "Flyer: soaring at altitude {}"(altitude)
+            return ()
+        }
+    }
+
+    class Swimmer {
+        public
+        int depth
+
+        public
+        create () {
+            depth = 0
+        }
+
+
+        public
+        nothing swim () {
+            depth = 10
+            print "Swimmer: diving to depth {}"(depth)
+            return ()
+        }
+    }
+
+    class Duck (public Flyer, public Swimmer) {
+        public
+        string name
+
+        public
+        create (string n) {
+            name = n
+            altitude = 0
+            depth = 0
+            print "Duck {name} hatched"(name=n)
+        }
+
+        public
+        nothing quack () {
+            print "{} says: quack!"(name)
+            return ()
+        }
+
+        public
+        nothing show () {
+            print "Duck {} – altitude={} depth={}"(name, altitude, depth)
+            return ()
+        }
+    }
+}
+
+start {
+    print "=== multiple inheritance demo ==="
+    print "(class layout: Flyer + Swimmer → Duck)"
+    print "Bases provide altitude and depth fields"
+    print "Duck can fly, swim, and quack"
+    print "See examples/print_multi_inherit.simple for the class model"
+}

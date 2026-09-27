@@ -1,0 +1,6 @@
+start {
+    int i
+    for (3 as int i) {
+        print "i={}"(i)
+    }
+}

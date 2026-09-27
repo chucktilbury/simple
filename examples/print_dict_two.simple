@@ -1,0 +1,6 @@
+start {
+    dict d
+    d = { year: 1815, age: 36 }
+    print "year {}"(d["year"])
+    print "age {}"(d["age"])
+}

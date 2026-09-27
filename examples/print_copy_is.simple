@@ -1,0 +1,23 @@
+class Box {
+    public
+    int n
+    public
+    create (int v) {
+        n = v
+    }
+}
+
+start {
+    Box a
+    Box b
+    a = Box.create(5)
+    b = copy a
+    b.n = 9
+    print "a={} b={}"(a.n, b.n)
+    if (a is Box) {
+        print "a is Box"
+    }
+    if (b is Box) {
+        print "b is Box type={}"(type(b))
+    }
+}

@@ -1,0 +1,20 @@
+# print – formatted strings
+# "pattern {} {name}"(positional, name=value)
+
+start {
+    int answer
+    string lang
+    string user
+
+    answer = 42
+    lang = "Simple"
+    user = "Grok"
+
+    print "--- formatted strings ---"
+    print "Hello, {}!"(user)
+    print "The answer is {}"(answer)
+    print "{} loves {}"(user, lang)
+    print "this {} a {name} string"("is", name="formatted")
+    print "{who} says: {msg}"(who=user, msg="hello")
+    print "mix {} and {named}"("positional", named="named value")
+}

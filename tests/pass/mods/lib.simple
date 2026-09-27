@@ -1,0 +1,4 @@
+nothing ping () {
+    print "pong"
+    return ()
+}

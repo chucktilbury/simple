@@ -1,0 +1,18 @@
+class A {
+    public
+    create () {
+        print "A"
+    }
+}
+class B {
+    public
+    create () {
+        print "B"
+    }
+}
+start {
+    A a
+    B b
+    a = A.create()
+    b = B.create()
+}

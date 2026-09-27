@@ -1,0 +1,9 @@
+start {
+    int i
+    int s
+    s = 0
+    for (4 as int i) {
+        s = s + i
+    }
+    print "{}"(s)
+}

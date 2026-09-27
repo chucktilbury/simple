@@ -1,0 +1,17 @@
+# print – basic types
+
+start {
+    int n
+    float f
+    string s
+
+    n = 42
+    f = 3.14
+    s = "Simple"
+
+    print "--- basic types ---"
+    print n
+    print f
+    print s
+    print "literal text"
+}

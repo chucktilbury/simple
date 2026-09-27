@@ -1,0 +1,3 @@
+start {
+    print "{who} {what}"(who="ok", what="fmt")
+}

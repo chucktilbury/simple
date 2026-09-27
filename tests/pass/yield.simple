@@ -1,0 +1,7 @@
+int bump (int n) {
+    yield (n)
+    yield (n + 1)
+}
+start {
+    print "yield-fn-ok"
+}

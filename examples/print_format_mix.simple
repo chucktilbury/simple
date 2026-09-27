@@ -1,0 +1,7 @@
+start {
+    int n
+    n = 7
+    print "plain"
+    print "n is {}"(n)
+    print "{who} has {n}"(who="Ada", n=n)
+}

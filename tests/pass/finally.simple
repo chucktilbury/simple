@@ -1,0 +1,12 @@
+start {
+    try {
+        raise (Boom)
+        print "no"
+    }
+    except (Boom) {
+        print "catch"
+    }
+    finally {
+        print "fin"
+    }
+}

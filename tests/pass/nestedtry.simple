@@ -1,0 +1,13 @@
+start {
+    try {
+        try {
+            raise (Inner)
+        }
+        except (Inner) {
+            print "in"
+        }
+    }
+    except (Outer) {
+        print "out"
+    }
+}

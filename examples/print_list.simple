@@ -1,0 +1,39 @@
+# Lists (arrays) + print
+
+start {
+    list xs
+    int i
+    int n
+    int total
+
+    xs = [1, 2, 3, 4, 5]
+    n = 5
+
+    print "=== list xs ==="
+    i = 0
+    while (i lt n) {
+        print "  xs[{}] = {}"(i, xs[i])
+        i = i + 1
+    }
+
+    print "=== squares ==="
+    i = 0
+    while (i lt n) {
+        print "  {}^2 = {}"(xs[i], xs[i] * xs[i])
+        i = i + 1
+    }
+
+    print "=== mutate ==="
+    xs[0] = 10
+    xs[4] = 50
+    print "  xs[0] now {}"(xs[0])
+    print "  xs[4] now {}"(xs[4])
+
+    total = 0
+    i = 0
+    while (i lt n) {
+        total = total + xs[i]
+        i = i + 1
+    }
+    print "sum = {}"(total)
+}

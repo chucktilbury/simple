@@ -1,0 +1,11 @@
+# Intentionally invalid – shows multiple parse errors
+# (the compiler still refuses to generate code if parse failed)
+
+start {
+    int x
+    x = 
+    print "recovered after missing rhs"
+    if (
+    print "recovered after bad if"
+    print "still parsing later statements"
+}

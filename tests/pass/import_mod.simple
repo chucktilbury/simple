@@ -1,0 +1,4 @@
+import "mods/lib.simple" as L
+start {
+    L.ping()
+}

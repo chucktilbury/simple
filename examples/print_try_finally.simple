@@ -1,0 +1,13 @@
+start {
+    try {
+        print "before"
+        raise (Oops)
+        print "skip"
+    }
+    except (Oops as e) {
+        print "caught {}"(e)
+    }
+    finally {
+        print "finally"
+    }
+}

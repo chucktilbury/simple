@@ -1,0 +1,17 @@
+class Box {
+    public
+    int n
+    public
+    create (int v) {
+        n = v
+    }
+}
+start {
+    Box a
+    Box b
+    a = Box.create(1)
+    b = a
+    b.n = 9
+    print "{}"(a.n)
+    print "{}"(b.n)
+}

@@ -1,0 +1,4 @@
+start {
+    print "{}"(type(1))
+    print "{}"(type("x"))
+}

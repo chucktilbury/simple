@@ -1,0 +1,23 @@
+class A {
+    public
+    create () {
+    }
+}
+class B (public A) {
+    public
+    int n
+    public
+    create (int v) {
+        n = v
+    }
+}
+start {
+    B b
+    b = B.create(4)
+    if (b is A) {
+        print "B is A"
+    }
+    B c
+    c = b as B
+    print "n={}"(c.n)
+}

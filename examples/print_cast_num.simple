@@ -1,0 +1,7 @@
+start {
+    int n
+    n = 9
+    print "int {}"(n)
+    print "type {}"(type(n))
+    print "cast int {}"((int) n)
+}

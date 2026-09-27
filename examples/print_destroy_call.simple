@@ -1,0 +1,19 @@
+class Box {
+    public
+    int n
+    public
+    create (int v) {
+        n = v
+        print "create {}"(n)
+    }
+    public
+    destroy {
+        print "destroy {}"(n)
+    }
+}
+
+start {
+    Box b
+    b = Box.create(3)
+    b.destroy()
+}

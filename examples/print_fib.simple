@@ -1,0 +1,26 @@
+# print – Fibonacci sequence
+
+start {
+    int n
+    int a
+    int b
+    int i
+    int t
+
+    n = 10
+    a = 0
+    b = 1
+
+    print "Fibonacci 0..{}"(n)
+    print "fib({}) = {}"(0, a)
+    print "fib({}) = {}"(1, b)
+
+    i = 2
+    while (i lte n) {
+        t = a + b
+        a = b
+        b = t
+        print "fib({}) = {}"(i, b)
+        i = i + 1
+    }
+}

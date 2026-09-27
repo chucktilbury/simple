@@ -1,0 +1,59 @@
+# Multiple inheritance example
+
+namespace Demo {
+    class Flyer {
+        public
+        int altitude
+
+        public
+        create () {
+            altitude = 0
+        }
+
+
+        public
+        nothing fly () {
+            altitude = 100
+            return ()
+        }
+    }
+
+    class Swimmer {
+        public
+        int depth
+
+        public
+        create () {
+            depth = 0
+        }
+
+
+        public
+        nothing swim () {
+            depth = 10
+            return ()
+        }
+    }
+
+    # Duck inherits from both Flyer and Swimmer
+    class Duck (public Flyer, public Swimmer) {
+        public
+        string name
+
+        public
+        create (string n) {
+            name = n
+            altitude = 0
+            depth = 0
+        }
+
+
+        public
+        nothing quack () {
+            return ()
+        }
+    }
+}
+
+start {
+}

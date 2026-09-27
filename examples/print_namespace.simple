@@ -1,0 +1,9 @@
+namespace Math {
+    int add (int a, int b) {
+        return (a + b)
+    }
+}
+
+start {
+    print "1+2={}"(Math.add(1, 2))
+}

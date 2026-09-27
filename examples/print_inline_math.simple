@@ -1,0 +1,8 @@
+start {
+    print "=== C math.h via inline ==="
+    inline {
+        printf("sin(0) = %.4f\n", sin(0.0));
+        printf("cos(0) = %.4f\n", cos(0.0));
+    }
+    print "back in Simple"
+}

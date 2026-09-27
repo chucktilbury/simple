@@ -1,0 +1,27 @@
+# Lists and dicts together
+
+start {
+    list primes
+    dict names
+    int i
+
+    primes = [2, 3, 5, 7]
+    names = { first: 1, second: 2, third: 3 }
+
+    print "=== primes ==="
+    i = 0
+    while (i lt 4) {
+        print "  prime[{}] = {}"(i, primes[i])
+        i = i + 1
+    }
+
+    print "=== named ranks ==="
+    print "  first  = {}"(names["first"])
+    print "  second = {}"(names["second"])
+    print "  third  = {}"(names["third"])
+
+    print "=== mix ==="
+    print "first prime = {}"(primes[0])
+    print "last prime  = {}"(primes[3])
+    print "first * second names = {}"(names["first"] * names["second"])
+}

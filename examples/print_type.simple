@@ -1,0 +1,21 @@
+# type(expr) – returns the type name as a string
+
+start {
+    int n
+    float f
+    string s
+    bool ok
+
+    n = 42
+    f = 3.14
+    s = "hello"
+    ok = true
+
+    print "=== type() ==="
+    print "n is {}"(type(n))
+    print "f is {}"(type(f))
+    print "s is {}"(type(s))
+    print "ok is {}"(type(ok))
+    print "literal 1 is {}"(type(1))
+    print "literal text is {}"(type("hi"))
+}

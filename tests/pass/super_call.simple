@@ -1,0 +1,22 @@
+class Base {
+    public
+    create () {
+        print "base"
+    }
+}
+class Child (public Base) {
+    public
+    create () {
+        print "child"
+    }
+    public
+    nothing boom () {
+        super Base.create()
+        return ()
+    }
+}
+start {
+    Child c
+    c = Child.create()
+    c.boom()
+}

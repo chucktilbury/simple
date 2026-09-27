@@ -1,0 +1,3 @@
+name = "greet"
+version = "1.0.0"
+entry = "src/greet.simple"

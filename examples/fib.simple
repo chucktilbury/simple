@@ -1,0 +1,35 @@
+# Classic Fibonacci (iterative) – Simple language
+# fib(0)=0, fib(1)=1, fib(n)=fib(n-1)+fib(n-2)
+
+start {
+    int n
+    int a
+    int b
+    int i
+    int t
+
+    n = 10
+    a = 0
+    b = 1
+    i = 0
+
+    if (n equ 0) {
+        # result is 0
+        a = 0
+    }
+    if (n equ 1) {
+        a = 1
+    }
+
+    # For n >= 2, iterate
+    if (n gt 1) {
+        i = 2
+        while (i lte n) {
+            t = a + b
+            a = b
+            b = t
+            i = i + 1
+        }
+        # b holds fib(n)
+    }
+}

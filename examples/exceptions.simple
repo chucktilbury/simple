@@ -1,0 +1,33 @@
+# Exception handling example
+
+namespace Demo {
+    class App {
+        public
+        create () {
+        }
+
+
+        public
+        nothing run () {
+            try {
+                raise (IOError)
+            }
+            except (IOError) {
+                # handled
+            }
+            finally {
+            }
+            return ()
+        }
+    }
+}
+
+start {
+    try {
+        raise (RuntimeError)
+    }
+    except (RuntimeError) {
+    }
+    finally {
+    }
+}

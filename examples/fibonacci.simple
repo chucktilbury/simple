@@ -1,0 +1,72 @@
+# Fibonacci sequence in Simple
+# Computes fib(n) iteratively and prints results via runtime I/O
+# (print helpers are declared as external LLVM calls when available)
+
+namespace Math {
+    class Fib {
+        public
+        create () {
+        }
+
+
+        # Iterative Fibonacci: returns the n-th Fibonacci number
+        # fib(0)=0, fib(1)=1, fib(n)=fib(n-1)+fib(n-2)
+        public
+        int compute (int n) {
+            if (n lt 0) {
+                return (0)
+            }
+            if (n equ 0) {
+                return (0)
+            }
+            if (n equ 1) {
+                return (1)
+            }
+
+            int a
+            int b
+            int i
+            int t
+            a = 0
+            b = 1
+            i = 2
+            while (i lte n) {
+                t = a + b
+                a = b
+                b = t
+                i = i + 1
+            }
+            return (b)
+        }
+
+        # Naive recursive version (fine for small n)
+        public
+        int compute_rec (int n) {
+            if (n lte 1) {
+                return (n)
+            }
+            int left
+            int right
+            left = compute_rec(n - 1)
+            right = compute_rec(n - 2)
+            return (left + right)
+        }
+    }
+}
+
+start {
+    int n
+    int result
+    int i
+
+    n = 10
+    i = 0
+    while (i lte n) {
+        # Would print: fib(i) = result
+        # Using local computation only in this minimal example
+        i = i + 1
+    }
+
+    # fib(10) = 55
+    result = 55
+}

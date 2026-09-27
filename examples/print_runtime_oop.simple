@@ -1,0 +1,37 @@
+class Animal {
+    public
+    create () {
+    }
+    public
+    virtual nothing speak () {
+        print "animal"
+        return ()
+    }
+}
+
+class Dog (public Animal) {
+    public
+    string name
+    private
+    int secret
+    public
+    create (string n) {
+        name = n
+        secret = 42
+    }
+    public
+    int get_secret () {
+        return (secret)
+    }
+}
+
+start {
+    Dog d
+    Animal a
+    d = Dog.create("Rex")
+    a = d
+
+    print "static-ish type(d) runtime = {}"(type(d))
+    print "type(a) runtime = {}"(type(a))
+    print "secret via public method = {}"(d.get_secret())
+}

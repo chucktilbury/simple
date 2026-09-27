@@ -1,0 +1,17 @@
+# Formatted strings + print statement
+
+start {
+    int x
+    string who
+    string msg
+
+    x = 42
+    who = "world"
+
+    print "hello {}"(who)
+    print "answer is {}"(x)
+    print "this {} a {name} string"("is", name="formatted")
+    print "{greeting}, {name}!"(greeting="Hello", name=who)
+    print x
+    print "done"
+}

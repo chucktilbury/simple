@@ -1,0 +1,25 @@
+class A {
+    public
+    create () {
+    }
+    public
+    virtual nothing speak () {
+        print "A"
+        return ()
+    }
+}
+class B (public A) {
+    public
+    create () {
+    }
+    public
+    virtual nothing speak () {
+        print "B"
+        return ()
+    }
+}
+start {
+    B b
+    b = B.create()
+    b.speak()
+}

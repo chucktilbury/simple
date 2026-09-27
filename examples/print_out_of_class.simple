@@ -1,0 +1,46 @@
+# Method declared inside the class, defined outside
+# Syntax:  returnType ClassName.method (params) { ... }
+
+namespace Demo {
+    class Greeter {
+        public
+        string name
+
+        public
+        create (string n)
+        public
+        nothing greet ()
+
+        public
+        nothing greet_person (string who)
+    }
+
+    # Out-of-class constructor
+    create Greeter (string n) {
+        name = n
+        print "Greeter created for {}"(n)
+    }
+
+    # Out-of-class destructor
+
+
+    # Out-of-class methods
+    nothing Greeter.greet () {
+        print "Hello from {}!"(name)
+        print "type(self name field) via greet defined outside the class"
+        return ()
+    }
+
+    nothing Greeter.greet_person (string who) {
+        print "{} says hello to {}"(name, who)
+        return ()
+    }
+}
+
+start {
+    print "=== declare in class, define outside ==="
+    print "Greeter.greet and Greeter.greet_person are only declared in the class"
+    print "Their bodies appear after the class as:"
+    print "  nothing Greeter.greet () { ... }"
+    print "  nothing Greeter.greet_person (string who) { ... }"
+}

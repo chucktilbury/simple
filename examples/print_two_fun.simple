@@ -1,0 +1,11 @@
+int triple (int x) {
+    return (x + x + x)
+}
+
+int add1 (int x) {
+    return (x + 1)
+}
+
+start {
+    print "{}"(add1(triple(3)))
+}

@@ -1,0 +1,9 @@
+start {
+    int i
+    int n
+    n = 0
+    for (5 as int i) {
+        n = n + 1
+    }
+    print "{}"(n)
+}

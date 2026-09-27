@@ -1,0 +1,41 @@
+# Full if / else (cond)* / else  chain
+
+start {
+    int n
+    n = 2
+
+    print "=== n = {} ==="(n)
+
+    if (n equ 0) {
+        print "zero"
+    }
+    else (n equ 1) {
+        print "one"
+    }
+    else (n equ 2) {
+        print "two"
+    }
+    else (n equ 3) {
+        print "three"
+    }
+    else {
+        print "other"
+    }
+
+    n = 7
+    print "=== n = {} ==="(n)
+    if (n lt 0) {
+        print "negative"
+    }
+    else if (n equ 0) {
+        print "zero"
+    }
+    else if (n lte 5) {
+        print "small"
+    }
+    else () {
+        print "large"
+    }
+
+    print "done"
+}

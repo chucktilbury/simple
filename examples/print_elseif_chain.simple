@@ -1,0 +1,16 @@
+start {
+    int n
+    n = 3
+    if (n equ 1) {
+        print "one"
+    }
+    else (n equ 2) {
+        print "two"
+    }
+    else (n equ 3) {
+        print "three"
+    }
+    else {
+        print "other"
+    }
+}

@@ -1,0 +1,16 @@
+start {
+    int n
+    n = 2
+    if (n equ 0) {
+        print "z"
+    }
+    else (n equ 1) {
+        print "o"
+    }
+    else (n equ 2) {
+        print "t"
+    }
+    else {
+        print "x"
+    }
+}

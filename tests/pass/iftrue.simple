@@ -1,0 +1,5 @@
+start {
+    if (3 gt 1) {
+        print "yes"
+    }
+}

@@ -1,0 +1,336 @@
+#!/usr/bin/env python3
+"""Simple package manager: init, add, install, publish, build, list."""
+from __future__ import annotations
+
+import hashlib
+import os
+import shutil
+import sys
+from pathlib import Path
+
+ROOT = Path.cwd()
+
+
+def registry_root() -> Path:
+    env = os.environ.get("SIMPLE_REGISTRY")
+    if env:
+        return Path(env)
+    home = Path(os.environ.get("HOME", "/tmp")) / ".simple" / "registry"
+    local = ROOT / "registry"
+    if local.is_dir():
+        return local
+    return home
+
+
+def read_toml_depends(text: str) -> dict[str, str]:
+    deps: dict[str, str] = {}
+    in_depends = False
+    for raw in text.splitlines():
+        line = raw.split("#", 1)[0].strip()
+        if not line:
+            continue
+        if line.startswith("[") and line.endswith("]"):
+            in_depends = line[1:-1].strip() == "depends"
+            continue
+        if in_depends and "=" in line:
+            k, v = line.split("=", 1)
+            deps[k.strip()] = v.strip().strip('"').strip("'")
+    return deps
+
+
+def read_toml_field(text: str, key: str, default: str = "") -> str:
+    for raw in text.splitlines():
+        line = raw.split("#", 1)[0].strip()
+        if line.startswith("[") and line.endswith("]"):
+            if line[1:-1].strip() not in ("", "package"):
+                # stop at first section unless still top-level
+                if key in ("name", "version", "entry"):
+                    pass
+        if line.startswith(key + " " ) or line.startswith(key + "="):
+            _, v = line.split("=", 1)
+            return v.strip().strip('"').strip("'")
+    return default
+
+
+def cmd_init(args: list[str]) -> int:
+    name = args[0] if args else ROOT.name
+    toml = ROOT / "simple.toml"
+    if toml.exists():
+        print("simple.toml already exists")
+        return 0
+    toml.write_text(
+        f'name = "{name}"\nversion = "0.1.0"\nentry = "src/main.simple"\n\n[depends]\n'
+    )
+    (ROOT / "src").mkdir(exist_ok=True)
+    main = ROOT / "src" / "main.simple"
+    if not main.exists():
+        main.write_text("start {\n    print \"hello from \"\n    print name\n}\n")
+    print(f"initialized {name}")
+    return 0
+
+
+def cmd_registry_init(args: list[str]) -> int:
+    r = Path(args[0]) if args else registry_root()
+    r.mkdir(parents=True, exist_ok=True)
+    idx = r / "index.txt"
+    if not idx.exists():
+        idx.write_text("# name version path\n")
+    print(f"registry at {r}")
+    return 0
+
+
+def index_lines(reg: Path) -> list[tuple[str, str, str]]:
+    idx = reg / "index.txt"
+    if not idx.exists():
+        return []
+    out = []
+    for raw in idx.read_text().splitlines():
+        line = raw.split("#", 1)[0].strip()
+        if not line:
+            continue
+        parts = line.split()
+        if len(parts) >= 3:
+            out.append((parts[0], parts[1], parts[2]))
+    return out
+
+
+def cmd_publish(args: list[str]) -> int:
+    if len(args) < 1:
+        print("usage: sim publish <pkg-dir> [registry]")
+        return 2
+    src = Path(args[0]).resolve()
+    reg = Path(args[1]) if len(args) > 1 else registry_root()
+    reg.mkdir(parents=True, exist_ok=True)
+    toml = src / "simple.toml"
+    if not toml.exists():
+        print(f"no simple.toml in {src}")
+        return 1
+    text = toml.read_text()
+    name = read_toml_field(text, "name", src.name)
+    ver = read_toml_field(text, "version", "0.1.0")
+    dest = reg / name / ver
+    if dest.exists():
+        shutil.rmtree(dest)
+    dest.mkdir(parents=True)
+    # copy package files
+    for item in src.iterdir():
+        if item.name in (".git", "vendor", "build"):
+            continue
+        target = dest / item.name
+        if item.is_dir():
+            shutil.copytree(item, target)
+        else:
+            shutil.copy2(item, target)
+    idx = reg / "index.txt"
+    lines = [ln for ln in idx.read_text().splitlines() if ln.strip() and not ln.startswith(f"{name} {ver} ")] if idx.exists() else []
+    rel = f"{name}/{ver}"
+    lines.append(f"{name} {ver} {rel}")
+    idx.write_text("\n".join(lines) + "\n")
+    print(f"published {name}@{ver} -> {dest}")
+    return 0
+
+
+def cmd_list(_args: list[str]) -> int:
+    reg = registry_root()
+    print(f"registry: {reg}")
+    for name, ver, path in index_lines(reg):
+        print(f"  {name}@{ver}  {path}")
+    return 0
+
+
+def cmd_add(args: list[str]) -> int:
+    if not args:
+        print("usage: sim add name@version")
+        return 2
+    spec = args[0]
+    if "@" in spec:
+        name, ver = spec.split("@", 1)
+    else:
+        name, ver = spec, ""
+    toml_path = ROOT / "simple.toml"
+    if not toml_path.exists():
+        cmd_init([ROOT.name])
+    text = toml_path.read_text()
+    if "[depends]" not in text:
+        text += "\n[depends]\n"
+    # pick latest if ver empty
+    if not ver:
+        versions = [v for n, v, _ in index_lines(registry_root()) if n == name]
+        if not versions:
+            print(f"package {name} not in registry {registry_root()}")
+            return 1
+        ver = versions[-1]
+    deps = read_toml_depends(text)
+    deps[name] = ver
+    # rewrite depends section
+    out_lines = []
+    skipping = False
+    written = False
+    for raw in text.splitlines():
+        s = raw.strip()
+        if s.startswith("[") and s.endswith("]"):
+            if skipping and not written:
+                for k, v in deps.items():
+                    out_lines.append(f'{k} = "{v}"')
+                written = True
+            skipping = s[1:-1].strip() == "depends"
+            out_lines.append(raw)
+            continue
+        if skipping:
+            continue
+        out_lines.append(raw)
+    if skipping and not written:
+        for k, v in deps.items():
+            out_lines.append(f'{k} = "{v}"')
+    toml_path.write_text("\n".join(out_lines) + "\n")
+    print(f"added {name}@{ver}")
+    return cmd_install([])
+
+
+def write_paths(vendor: Path, deps: dict[str, str]) -> None:
+    lines = []
+    for name, ver in deps.items():
+        pkg = vendor / name / ver
+        entry = pkg / "src" / f"{name}.simple"
+        toml = pkg / "simple.toml"
+        if toml.exists():
+            e = read_toml_field(toml.read_text(), "entry", "")
+            if e:
+                entry = pkg / e
+        if not entry.exists():
+            srcdir = pkg / "src"
+            if srcdir.is_dir():
+                simples = list(srcdir.glob("*.simple"))
+                if simples:
+                    entry = simples[0]
+        if entry.exists():
+            lines.append(f"{name}={entry}")
+            # also map name.stem
+            if entry.suffix == ".simple":
+                lines.append(f"{name}.{entry.stem}={entry}")
+            for extra in (pkg / "src").glob("*.simple") if (pkg / "src").is_dir() else []:
+                lines.append(f"{name}.{extra.stem}={extra}")
+    (ROOT / "simple.paths").write_text("\n".join(lines) + "\n")
+
+
+def cmd_install(_args: list[str]) -> int:
+    toml_path = ROOT / "simple.toml"
+    if not toml_path.exists():
+        print("no simple.toml")
+        return 1
+    deps = read_toml_depends(toml_path.read_text())
+    reg = registry_root()
+    vendor = ROOT / "vendor"
+    vendor.mkdir(exist_ok=True)
+    lock = []
+    for name, ver in deps.items():
+        src = None
+        for n, v, p in index_lines(reg):
+            if n == name and v == ver:
+                src = reg / p
+                break
+        if src is None:
+            cand = reg / name / ver
+            if cand.is_dir():
+                src = cand
+        if src is None or not src.exists():
+            print(f"missing {name}@{ver} in {reg}")
+            return 1
+        dest = vendor / name / ver
+        if dest.exists():
+            shutil.rmtree(dest)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copytree(src, dest)
+        h = hashlib.sha256()
+        for f in sorted(dest.rglob("*")):
+            if f.is_file():
+                h.update(f.read_bytes())
+        lock.append(f"{name} {ver} {h.hexdigest()[:16]} {dest}")
+        print(f"installed {name}@{ver}")
+    (ROOT / "simple.lock").write_text("\n".join(lock) + "\n")
+    write_paths(vendor, deps)
+    print("wrote simple.paths")
+    return 0
+
+
+def cmd_build(args: list[str]) -> int:
+    toml = ROOT / "simple.toml"
+    entry = "src/main.simple"
+    if toml.exists():
+        e = read_toml_field(toml.read_text(), "entry", entry)
+        if e:
+            entry = e
+    if args:
+        entry = args[0]
+    out = args[1] if len(args) > 1 else "app"
+    simplec = os.environ.get("SIMPLEC")
+    for cand in [simplec, "/tmp/simplec_cpp", str(ROOT / "simplec"), str(ROOT / "build" / "simplec")]:
+        if cand and os.path.isfile(cand) and os.access(cand, os.X_OK):
+            simplec = cand
+            break
+    if not simplec:
+        print("simplec not found; set SIMPLEC=")
+        return 1
+    rt = ROOT / "runtime" / "simple_rt.o"
+    if not rt.exists() and (ROOT / "runtime" / "simple_rt.c").exists():
+        os.system(f"cc -O2 -fPIC -c {ROOT/'runtime'/'simple_rt.c'} -o {rt}")
+    extras = []
+    native = ROOT / "native"
+    if native.is_dir():
+        for src in list(native.glob("*.c")) + list(native.glob("*.cpp")):
+            obj = src.with_suffix(".o")
+            cc = "c++" if src.suffix == ".cpp" else "cc"
+            ccc = f'{cc} -O2 -c "{src}" -o "{obj}"'
+            print(ccc)
+            if os.system(ccc) != 0:
+                return 1
+            extras.append(str(obj))
+    vendor = ROOT / "vendor"
+    if vendor.is_dir():
+        for src in vendor.rglob("native/*"):
+            if src.suffix in (".c", ".cpp") and src.is_file():
+                obj = src.with_suffix(".o")
+                cc = "c++" if src.suffix == ".cpp" else "cc"
+                ccc = f'{cc} -O2 -c "{src}" -o "{obj}"'
+                print(ccc)
+                if os.system(ccc) != 0:
+                    return 1
+                extras.append(str(obj))
+    extra_flags = " ".join(f'--extra-obj "{e}"' for e in extras)
+    cmd = f'"{simplec}" "{entry}" -o "{out}" {extra_flags}'
+    print(cmd)
+    return os.system(cmd)
+
+
+def main() -> int:
+    if len(sys.argv) < 2 or sys.argv[1] in ("-h", "--help", "help"):
+        print(
+            "sim — Simple package manager\n"
+            "  sim init [name]\n"
+            "  sim registry-init [dir]\n"
+            "  sim publish <pkg-dir> [registry]\n"
+            "  sim list\n"
+            "  sim add name@version\n"
+            "  sim install\n"
+            "  sim build [entry] [outfile]\n"
+            "Env: SIMPLE_REGISTRY  SIMPLEC"
+        )
+        return 0
+    cmds = {
+        "init": cmd_init,
+        "registry-init": cmd_registry_init,
+        "publish": cmd_publish,
+        "list": cmd_list,
+        "add": cmd_add,
+        "install": cmd_install,
+        "build": cmd_build,
+    }
+    fn = cmds.get(sys.argv[1])
+    if not fn:
+        print("unknown command", sys.argv[1])
+        return 2
+    return fn(sys.argv[2:])
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

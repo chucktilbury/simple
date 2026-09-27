@@ -1,0 +1,13 @@
+int count_to (int n) {
+    int i
+    i = 0
+    while (i lt n) {
+        yield (i)
+        i = i + 1
+    }
+}
+
+start {
+    print "=== yield generator defined ==="
+    print "count_to yields 0 .. n-1 (use while to consume in tests)"
+}

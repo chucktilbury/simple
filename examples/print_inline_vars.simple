@@ -1,0 +1,17 @@
+start {
+    int n
+    string msg
+    n = 41
+    msg = "answer"
+
+    print "before n={} msg={}"(n, msg)
+
+    inline (n, msg) {
+        n = n + 1;
+        printf("C sees n=%lld msg=%s\n", n, msg);
+        printf("C writes n=43\n");
+        n = 43;
+    }
+
+    print "after n={} msg={}"(n, msg)
+}

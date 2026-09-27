@@ -1,0 +1,13 @@
+class C {
+    public
+    int n
+    public
+    create () {
+        n = 11
+    }
+}
+start {
+    C c
+    c = C.create()
+    print "{}"(c.n)
+}

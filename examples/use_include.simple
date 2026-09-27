@@ -1,0 +1,10 @@
+# include – textual inclusion of another Simple file
+# The contents of modules/math_lib.simple are merged into this module.
+
+include "modules/math_lib.simple"
+
+start {
+    print "=== include demo ==="
+    print "MathLib.Counter was included from modules/math_lib.simple"
+    print "include merges declarations into the current module"
+}

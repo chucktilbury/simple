@@ -1,0 +1,17 @@
+start {
+    int i
+    int s
+    i = 0
+    s = 0
+    while (i lt 10) {
+        i = i + 1
+        if (i equ 3) {
+            continue
+        }
+        if (i equ 6) {
+            break
+        }
+        s = s + i
+    }
+    print "{}"(s)
+}

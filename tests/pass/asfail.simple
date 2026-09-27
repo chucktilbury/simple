@@ -1,0 +1,22 @@
+class A {
+    public
+    create () {
+    }
+}
+class B {
+    public
+    create () {
+    }
+}
+start {
+    A a
+    B b
+    a = A.create()
+    b = a as B
+    if (b is B) {
+        print "yes"
+    }
+    else {
+        print "no"
+    }
+}

@@ -1,0 +1,23 @@
+# Expressions – arithmetic
+
+start {
+    int a
+    int b
+    int r
+
+    a = 10
+    b = 3
+
+    print "=== arithmetic ==="
+    print "a = {}, b = {}"(a, b)
+    print "a + b = {}"(a + b)
+    print "a - b = {}"(a - b)
+    print "a * b = {}"(a * b)
+    print "a / b = {}"(a / b)
+    print "a % b = {}"(a % b)
+    print "(a + b) * 2 = {}"((a + b) * 2)
+    print "a * b + a / b = {}"(a * b + a / b)
+
+    r = -a
+    print "-a = {}"(r)
+}

@@ -1,0 +1,20 @@
+class Box <T> {
+    public
+    T value
+    public
+    create (T v) {
+        value = v
+    }
+}
+
+nothing show <T> (T x) {
+    print "show {}"(x)
+    return ()
+}
+
+start {
+    Box<int> a
+    a = Box<int>.create(7)
+    print "value={}"(a.value)
+    show<int>(a.value)
+}

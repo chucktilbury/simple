@@ -1,0 +1,13 @@
+class Vault {
+    private
+    int secret
+    public
+    create () {
+        secret = 1
+    }
+}
+start {
+    Vault v
+    v = Vault.create()
+    print v.secret
+}

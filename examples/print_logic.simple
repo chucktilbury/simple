@@ -1,0 +1,5 @@
+start {
+    print "and {} {}"(1 and 1, 1 and 0)
+    print "or  {} {}"(0 or 1, 0 or 0)
+    print "not {}"(not 0)
+}

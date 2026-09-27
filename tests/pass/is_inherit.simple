@@ -1,0 +1,17 @@
+class A {
+    public
+    create () {
+    }
+}
+class B (public A) {
+    public
+    create () {
+    }
+}
+start {
+    B b
+    b = B.create()
+    if (b is A) {
+        print "yes"
+    }
+}

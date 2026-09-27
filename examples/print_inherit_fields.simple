@@ -1,0 +1,27 @@
+# Inheritance fields illustrated with print
+# (Values mirror what Duck would hold after fly/swim)
+
+start {
+    int altitude
+    int depth
+    string name
+
+    name = "Donald"
+    altitude = 0
+    depth = 0
+
+    print "=== Duck (Flyer + Swimmer) ==="
+    print "name = {}"(name)
+    print "initial altitude={} depth={}"(altitude, depth)
+
+    # fly()
+    altitude = 100
+    print "after fly: altitude={}"(altitude)
+
+    # swim()
+    depth = 10
+    print "after swim: depth={}"(depth)
+
+    print "Duck {} – altitude={} depth={}"(name, altitude, depth)
+    print "{} says: quack!"(name)
+}

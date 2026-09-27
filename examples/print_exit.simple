@@ -1,0 +1,7 @@
+# exit (code) terminates the process
+
+start {
+    print "about to exit(0)"
+    exit (0)
+    print "never printed"
+}

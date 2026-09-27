@@ -1,0 +1,9 @@
+# import – load a module, optionally under an alias namespace
+
+import "modules/greet_lib.simple" as Welcome
+
+start {
+    print "=== import demo ==="
+    print "greet_lib imported as namespace Welcome"
+    print "Classes live under Welcome after 'import ... as Welcome'"
+}

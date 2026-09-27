@@ -1,0 +1,16 @@
+class A {
+    public
+    create () {
+    }
+}
+start {
+    A a
+    a = A.create()
+    a = null
+    if (a is A) {
+        print "y"
+    }
+    else {
+        print "n"
+    }
+}

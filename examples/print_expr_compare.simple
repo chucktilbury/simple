@@ -1,0 +1,38 @@
+# Expressions – comparison (print 1/0 for true/false via int)
+
+start {
+    int a
+    int b
+    int t
+    int f
+
+    a = 10
+    b = 3
+    t = 1
+    f = 0
+
+    print "=== comparison ==="
+    print "a = {}, b = {}"(a, b)
+
+    if (a equ b) {
+        print "a equ b → true"
+    }
+    if (a neq b) {
+        print "a neq b → true"
+    }
+    if (a gt b) {
+        print "a gt b → true"
+    }
+    if (a lt b) {
+        print "a lt b → true"
+    }
+    if (a gte 10) {
+        print "a gte 10 → true"
+    }
+    if (b lte 3) {
+        print "b lte 3 → true"
+    }
+    if (a equ 10) {
+        print "a equ 10 → true"
+    }
+}

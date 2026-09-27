@@ -1,0 +1,9 @@
+start {
+    try {
+        raise (IOError)
+        print "no"
+    }
+    except (IOError as err) {
+        print "got {}"(err)
+    }
+}

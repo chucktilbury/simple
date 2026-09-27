@@ -1,0 +1,34 @@
+# Exceptions + print
+
+start {
+    print "=== exception handling demo ==="
+
+    try {
+        print "inside try: about to raise IOError"
+        raise (IOError)
+        print "this line should not run"
+    }
+    except (IOError) {
+        print "caught: IOError"
+    }
+    finally {
+        print "finally: always runs after IOError path"
+    }
+
+    try {
+        print "inside try: about to raise RuntimeError"
+        raise (RuntimeError)
+        print "this line should not run either"
+    }
+    except (RuntimeError) {
+        print "caught: RuntimeError"
+    }
+    except (IOError) {
+        print "caught: IOError (should not match)"
+    }
+    finally {
+        print "finally: always runs after RuntimeError path"
+    }
+
+    print "after all handlers – program continues"
+}

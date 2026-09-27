@@ -1,0 +1,38 @@
+# print – primes up to limit
+
+start {
+    int limit
+    int n
+    int d
+    int is_prime
+    int rem
+    int count
+
+    limit = 30
+    count = 0
+    n = 2
+
+    print "Primes up to {}:"(limit)
+
+    while (n lte limit) {
+        is_prime = 1
+        d = 2
+        while (d * d lte n) {
+            rem = n
+            while (rem gte d) {
+                rem = rem - d
+            }
+            if (rem equ 0) {
+                is_prime = 0
+            }
+            d = d + 1
+        }
+        if (is_prime equ 1) {
+            print "  {}"(n)
+            count = count + 1
+        }
+        n = n + 1
+    }
+
+    print "Found {} primes"(count)
+}

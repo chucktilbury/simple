@@ -1,0 +1,10 @@
+start {
+    print "=== except as ==="
+    try {
+        raise (IOError)
+    }
+    except (IOError as err) {
+        print "caught {}"(err)
+    }
+    print "done"
+}

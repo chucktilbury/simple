@@ -1,0 +1,3 @@
+start {
+    print (notatype) 1
+}

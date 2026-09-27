@@ -1,0 +1,57 @@
+# Full-featured Simple example:
+# inheritance, visibility, overloading, math-ready types
+
+namespace Demo {
+    class Animal {
+        public
+        string name
+
+        public
+        create (string n) {
+            name = n
+        }
+
+
+        public
+        nothing speak () {
+            return ()
+        }
+    }
+
+    # Dog inherits from Animal
+    class Dog (public Animal) {
+        private
+        int age
+
+        public
+        create (string n) {
+            name = n
+            age = 0
+        }
+
+        # Overloaded constructor
+        public
+        create (string n, int a) {
+            name = n
+            age = a
+        }
+
+
+        public
+        nothing speak () {
+            return ()
+        }
+
+        public
+        int get_age () {
+            return (age)
+        }
+    }
+}
+
+start {
+    int x
+    float y
+    x = 42
+    y = 3.14
+}

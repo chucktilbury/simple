@@ -1,0 +1,7 @@
+nothing show <T> (T x) {
+    print "{}"(x)
+    return ()
+}
+start {
+    show<int>(9)
+}

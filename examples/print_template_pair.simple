@@ -1,0 +1,17 @@
+class Pair <A, B> {
+    public
+    A first
+    public
+    B second
+    public
+    create (A x, B y) {
+        first = x
+        second = y
+    }
+}
+
+start {
+    Pair<int, string> p
+    p = Pair<int, string>.create(1, "one")
+    print "first={} second={}"(p.first, p.second)
+}

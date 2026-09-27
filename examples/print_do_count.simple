@@ -1,0 +1,8 @@
+start {
+    int i
+    i = 0
+    do {
+        print "tick {}"(i)
+        i = i + 1
+    } while (i lt 3)
+}

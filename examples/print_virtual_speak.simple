@@ -1,0 +1,27 @@
+class Animal {
+    public
+    create () {
+    }
+    public
+    virtual nothing speak () {
+        print "..."
+        return ()
+    }
+}
+
+class Cat (public Animal) {
+    public
+    create () {
+    }
+    public
+    virtual nothing speak () {
+        print "meow"
+        return ()
+    }
+}
+
+start {
+    Cat c
+    c = Cat.create()
+    c.speak()
+}

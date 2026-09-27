@@ -1,0 +1,6 @@
+start {
+    int n
+    n = 41
+    print "{}"((int) (float) n)
+    print "{}"(type(n))
+}

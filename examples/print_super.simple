@@ -1,0 +1,46 @@
+# super Base.create / super Base.method
+
+class Flyer {
+    public
+    int altitude
+
+    public
+    create () {
+        altitude = 0
+        print "Flyer.create"
+    }
+
+
+    public
+    nothing fly () {
+        altitude = 100
+        print "Flyer.fly altitude={}"(altitude)
+        return ()
+    }
+}
+
+class Duck (public Flyer) {
+    public
+    string name
+
+    public
+    create (string n) {
+        super Flyer.create ()
+        name = n
+        print "Duck.create name={}"(n)
+    }
+
+
+    public
+    nothing fly () {
+        super Flyer.fly ()
+        print "Duck.fly after super, name={}"(name)
+        return ()
+    }
+}
+
+start {
+    print "=== super demo ==="
+    print "Duck.create calls super Flyer.create"
+    print "Duck.fly calls super Flyer.fly"
+}

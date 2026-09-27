@@ -1,0 +1,10 @@
+# Both include and import
+
+include "modules/math_lib.simple"
+import "modules/greet_lib.simple" as Hi
+
+start {
+    print "=== include + import ==="
+    print "included: MathLib (flat merge)"
+    print "imported as Hi: Greet module under alias"
+}

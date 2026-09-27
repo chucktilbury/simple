@@ -1,0 +1,36 @@
+# Expressions – logic with if (and / or / not)
+
+start {
+    int a
+    int b
+
+    a = 10
+    b = 3
+
+    print "=== logic ==="
+    print "a = {}, b = {}"(a, b)
+
+    if (a gt 5) {
+        print "a gt 5 → branch taken"
+    }
+
+    if (a gt 5) {
+        if (b lt 5) {
+            print "a gt 5 and b lt 5 → both true"
+        }
+    }
+
+    if (a equ 0) {
+        print "a equ 0 → not expected"
+    }
+    if (a neq 0) {
+        print "a neq 0 → true"
+    }
+
+    if (b gt 100) {
+        print "b gt 100 → not expected"
+    }
+    if (b lte 100) {
+        print "b lte 100 → true"
+    }
+}

@@ -1,0 +1,23 @@
+class Animal {
+    public
+    create () {
+    }
+}
+class Dog (public Animal) {
+    public
+    int id
+    public
+    create (int x) {
+        id = x
+    }
+}
+start {
+    Dog d
+    d = Dog.create(3)
+    Dog e
+    e = d as Dog
+    print "{}"(e.id)
+    if (d is Animal) {
+        print "isa"
+    }
+}

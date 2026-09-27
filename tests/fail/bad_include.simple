@@ -1,0 +1,4 @@
+include "no_such_file.simple"
+start {
+    print 1
+}

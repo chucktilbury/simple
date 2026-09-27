@@ -1,0 +1,4 @@
+nothing hello (string who) {
+    print "hello {}"(who)
+    return ()
+}

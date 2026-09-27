@@ -1,0 +1,6 @@
+start {
+    print "{}"(3 lt 5)
+    print "{}"(3 gt 5)
+    print "{}"(4 equ 4)
+    print "{}"(4 neq 5)
+}

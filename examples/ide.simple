@@ -1,0 +1,140 @@
+# Simple IDE — terminal wrapper (edit / compile / run)
+# Build:  simplec examples/ide.simple -o simple-ide
+# Run:    SIMPLEC=/path/to/simplec ./simple-ide [file.simple]
+#
+# Commands: help, new, open <file>, save, saveas <file>,
+#           list, compile, run, edit, quit
+
+start {
+    print "Simple IDE"
+    inline {
+        static char path[512];
+        static char buf[65536];
+        static char line[1024];
+        static char cmd[128];
+        static char arg[512];
+        const char *simplec;
+
+        simplec = getenv("SIMPLEC");
+        if (!simplec || !simplec[0]) simplec = "simplec";
+
+        path[0] = 0;
+        buf[0] = 0;
+        if (getenv("SIMPLE_IDE_FILE")) {
+            strncpy(path, getenv("SIMPLE_IDE_FILE"), sizeof(path)-1);
+        }
+
+        /* load file if path set */
+        if (path[0]) {
+            FILE *f = fopen(path, "r");
+            if (f) {
+                size_t n = fread(buf, 1, sizeof(buf)-1, f);
+                buf[n] = 0;
+                fclose(f);
+                printf("loaded %s (%zu bytes)\n", path, n);
+            } else {
+                printf("new file %s\n", path);
+                buf[0] = 0;
+            }
+        }
+
+        printf("type 'help'\n");
+        for (;;) {
+            printf("%s> ", path[0] ? path : "(no file)");
+            fflush(stdout);
+            if (!fgets(line, sizeof(line), stdin)) break;
+            cmd[0] = 0; arg[0] = 0;
+            sscanf(line, "%127s %511[^\n]", cmd, arg);
+            /* trim arg trailing space */
+            {
+                size_t L = strlen(arg);
+                while (L && (arg[L-1]==' ' || arg[L-1]=='\r')) arg[--L]=0;
+            }
+
+            if (!cmd[0] || strcmp(cmd,"help")==0) {
+                if (strcmp(cmd,"help")==0 || !cmd[0]) {
+                    if (!cmd[0]) continue;
+                    printf("  new              empty buffer\n");
+                    printf("  open <file>      load .simple file\n");
+                    printf("  save / saveas    write buffer\n");
+                    printf("  list             show buffer\n");
+                    printf("  edit             append lines, '.' alone to end\n");
+                    printf("  compile          simplec buffer -o /tmp/simple-out\n");
+                    printf("  run              compile then run\n");
+                    printf("  quit\n");
+                    continue;
+                }
+            }
+            if (strcmp(cmd,"quit")==0 || strcmp(cmd,"exit")==0) break;
+            if (strcmp(cmd,"new")==0) {
+                buf[0]=0; path[0]=0;
+                printf("empty buffer\n");
+                continue;
+            }
+            if (strcmp(cmd,"open")==0) {
+                if (!arg[0]) { printf("open <file>\n"); continue; }
+                strncpy(path, arg, sizeof(path)-1);
+                FILE *f = fopen(path, "r");
+                if (!f) { buf[0]=0; printf("new %s\n", path); continue; }
+                size_t n = fread(buf, 1, sizeof(buf)-1, f);
+                buf[n]=0; fclose(f);
+                printf("loaded %zu bytes\n", n);
+                continue;
+            }
+            if (strcmp(cmd,"save")==0 || strcmp(cmd,"saveas")==0) {
+                if (strcmp(cmd,"saveas")==0) {
+                    if (!arg[0]) { printf("saveas <file>\n"); continue; }
+                    strncpy(path, arg, sizeof(path)-1);
+                }
+                if (!path[0]) { printf("no path; use saveas <file>\n"); continue; }
+                FILE *f = fopen(path, "w");
+                if (!f) { perror("save"); continue; }
+                fputs(buf, f); fclose(f);
+                printf("wrote %s\n", path);
+                continue;
+            }
+            if (strcmp(cmd,"list")==0) {
+                if (!buf[0]) printf("(empty)\n");
+                else fputs(buf, stdout);
+                if (buf[0] && buf[strlen(buf)-1] != '\n') putchar('\n');
+                continue;
+            }
+            if (strcmp(cmd,"edit")==0) {
+                printf("enter lines, a line with only . to finish\n");
+                buf[0]=0;
+                for (;;) {
+                    if (!fgets(line, sizeof(line), stdin)) break;
+                    if (strcmp(line, ".\n")==0 || strcmp(line,".")==0) break;
+                    strncat(buf, line, sizeof(buf)-strlen(buf)-1);
+                }
+                printf("%zu bytes\n", strlen(buf));
+                continue;
+            }
+            if (strcmp(cmd,"compile")==0 || strcmp(cmd,"run")==0) {
+                const char *src = "/tmp/simple-ide.simple";
+                const char *outp = "/tmp/simple-out";
+                FILE *f = fopen(src, "w");
+                if (!f) { perror("tmp"); continue; }
+                if (buf[0]) fputs(buf, f);
+                else if (path[0]) {
+                    FILE *in = fopen(path, "r");
+                    if (in) { char tmp[4096]; size_t n; while ((n=fread(tmp,1,sizeof tmp,in))) fwrite(tmp,1,n,f); fclose(in); }
+                }
+                fclose(f);
+                char cc[1024];
+                snprintf(cc, sizeof(cc), "\"%s\" \"%s\" -o \"%s\"", simplec, src, outp);
+                printf("$ %s\n", cc);
+                int st = system(cc);
+                if (st != 0) { printf("compile failed (%d)\n", st); continue; }
+                printf("compile ok\n");
+                if (strcmp(cmd,"run")==0) {
+                    printf("$ %s\n", outp);
+                    system(outp);
+                }
+                continue;
+            }
+            printf("unknown command '%s' (help)\n", cmd);
+        }
+        printf("bye\n");
+    }
+}

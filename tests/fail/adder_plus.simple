@@ -1,0 +1,16 @@
+class Adder {
+    public
+    int n
+    public
+    create (int v) {
+        n = v
+    }
+}
+int Adder.plus (int x) {
+    return (n + x)
+}
+start {
+    Adder a
+    a = Adder.create(10)
+    print "ok"
+}

@@ -1,0 +1,28 @@
+class Animal {
+    public
+    create () {
+    }
+
+    public
+    virtual nothing speak () {
+        print "animal"
+        return ()
+    }
+}
+
+class Dog (public Animal) {
+    public
+    create () {
+    }
+
+    public
+    virtual nothing speak () {
+        print "woof"
+        return ()
+    }
+}
+
+start {
+    print "=== virtual ==="
+    print "Dog.speak overrides Animal.speak"
+}

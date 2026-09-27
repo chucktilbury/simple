@@ -1,0 +1,11 @@
+start {
+    if (1) {
+        print "t"
+    }
+    if (0) {
+        print "f"
+    }
+    else {
+        print "e"
+    }
+}

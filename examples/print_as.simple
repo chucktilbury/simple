@@ -1,0 +1,57 @@
+class Animal {
+    public
+    create () {
+    }
+    public
+    virtual nothing speak () {
+        print "animal"
+        return ()
+    }
+}
+
+class Dog (public Animal) {
+    public
+    string name
+    public
+    create (string n) {
+        name = n
+    }
+    public
+    virtual nothing speak () {
+        print "woof {}"(name)
+        return ()
+    }
+}
+
+class Cat (public Animal) {
+    public
+    create () {
+    }
+}
+
+start {
+    Animal a
+    Dog d
+    a = Dog.create("Rex")
+
+    print "=== a as Dog ==="
+    d = a as Dog
+    if (d is Dog) {
+        print "downcast ok name={}"(d.name)
+        d.speak()
+    }
+
+    print "=== a as Cat ==="
+    Cat c
+    c = a as Cat
+    if (c is Cat) {
+        print "unexpected cat"
+    }
+    else {
+        print "as Cat failed (null)"
+    }
+
+    print "=== (Dog) a also checked ==="
+    d = (Dog) a
+    print "still Rex via checked paren cast: {}"(d.name)
+}

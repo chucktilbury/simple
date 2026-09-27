@@ -1,0 +1,11 @@
+class Box {
+    public
+    create () {
+    }
+}
+start {
+    Box b
+    b = Box.create()
+    b = null
+    print b
+}

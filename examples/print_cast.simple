@@ -1,0 +1,10 @@
+start {
+    int n
+    float f
+    string s
+    n = 42
+    f = (float) n
+    n = (int) f
+    s = (string) n
+    print "int {} float-cast-back {} str {}"(n, (int) f, s)
+}

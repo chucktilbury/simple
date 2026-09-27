@@ -1,0 +1,27 @@
+start {
+    int i
+
+    print "=== while + continue + break ==="
+    i = 0
+    while (i lte 10) {
+        i = i + 1
+        if (i equ 3) {
+            print "  skip 3"
+            continue
+        }
+        if (i equ 6) {
+            print "  stop at 6"
+            break
+        }
+        print "  while i = {}"(i)
+    }
+
+    print "=== do while ==="
+    i = 0
+    do {
+        print "  do i = {}"(i)
+        i = i + 1
+    } while (i lt 3)
+
+    print "=== done ==="
+}

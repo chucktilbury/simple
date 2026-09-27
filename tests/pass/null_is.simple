@@ -1,0 +1,15 @@
+class Box {
+    public
+    create () {
+    }
+}
+start {
+    Box b
+    b = null
+    if (b is Box) {
+        print "yes"
+    }
+    else {
+        print "no"
+    }
+}

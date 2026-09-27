@@ -1,0 +1,6 @@
+int dbl (int x) {
+    return (x + x)
+}
+start {
+    print "{}"(dbl(4))
+}

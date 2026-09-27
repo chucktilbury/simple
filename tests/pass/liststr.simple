@@ -1,0 +1,5 @@
+start {
+    list xs
+    xs = ["a", "b"]
+    print "{}"(xs[0])
+}

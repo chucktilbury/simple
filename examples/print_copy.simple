@@ -1,0 +1,43 @@
+class Dog {
+    public
+    string name
+    public
+    int age
+    public
+    create (string n) {
+        name = n
+        age = 1
+    }
+    public
+    virtual nothing speak () {
+        print "woof {} age={}"(name, age)
+        return ()
+    }
+}
+
+start {
+    Dog a
+    Dog b
+    a = Dog.create("Rex")
+    a.age = 5
+    print "=== a ==="
+    a.speak()
+
+    print "=== b = a  (copy assign/construct) ==="
+    b = a
+    b.name = "Max"
+    b.age = 9
+    print "a after b mutated:"
+    a.speak()
+    print "b:"
+    b.speak()
+
+    print "=== c = copy a ==="
+    Dog c
+    c = copy a
+    c.name = "Spot"
+    print "a after copy mutated:"
+    a.speak()
+    print "c:"
+    c.speak()
+}

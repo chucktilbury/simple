@@ -1,0 +1,10 @@
+# inline { C code } — compiled with cc and linked into the executable
+
+start {
+    print "=== Simple before inline ==="
+    inline {
+        printf("hello from C printf\n");
+        printf("  2 + 2 = %d\n", 2 + 2);
+    }
+    print "=== Simple after inline ==="
+}

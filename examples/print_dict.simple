@@ -1,0 +1,24 @@
+# Dictionaries + print
+
+start {
+    dict scores
+    int a
+    int b
+    int c
+
+    scores = { alice: 90, bob: 75, cara: 88 }
+
+    print "=== scores ==="
+    print "  alice = {}"(scores["alice"])
+    print "  bob   = {}"(scores["bob"])
+    print "  cara  = {}"(scores["cara"])
+
+    print "=== update bob ==="
+    scores["bob"] = 80
+    print "  bob now = {}"(scores["bob"])
+
+    a = scores["alice"]
+    b = scores["bob"]
+    c = scores["cara"]
+    print "average-ish = {}"((a + b + c) / 3)
+}

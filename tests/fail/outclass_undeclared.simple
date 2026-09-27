@@ -1,0 +1,11 @@
+class Adder {
+    public
+    create () {
+    }
+}
+int Adder.plus (int x) {
+    return (x)
+}
+start {
+    print 1
+}

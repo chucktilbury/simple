@@ -1,0 +1,6 @@
+start {
+    list xs
+    xs = ["alpha", "beta"]
+    print "first {}"(xs[0])
+    print "second {}"(xs[1])
+}

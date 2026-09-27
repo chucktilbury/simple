@@ -1,0 +1,12 @@
+class Shape {
+    public
+    create () {
+    }
+
+    public
+    virtual nothing draw ()
+}
+
+start {
+    print "Shape.draw is abstract (no body)"
+}

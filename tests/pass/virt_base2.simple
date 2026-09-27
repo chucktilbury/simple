@@ -1,0 +1,27 @@
+class P {
+    public
+    create () {
+    }
+    public
+    virtual nothing hi () {
+        print "P"
+        return ()
+    }
+}
+class C (public P) {
+    public
+    create () {
+    }
+    public
+    virtual nothing hi () {
+        print "C"
+        return ()
+    }
+}
+start {
+    C c
+    P p
+    c = C.create()
+    p = c
+    p.hi()
+}

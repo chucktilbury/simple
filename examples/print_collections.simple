@@ -1,0 +1,29 @@
+# List and dict initializers and indexing
+
+start {
+    list nums
+    dict ages
+    int x
+    int y
+
+    print "=== list ==="
+    nums = [10, 20, 30]
+    print "nums[0] = {}"(nums[0])
+    print "nums[1] = {}"(nums[1])
+    print "nums[2] = {}"(nums[2])
+
+    nums[1] = 99
+    print "after set, nums[1] = {}"(nums[1])
+
+    print "=== dict ==="
+    ages = { alice: 30, bob: 25 }
+    print "alice = {}"(ages["alice"])
+    print "bob = {}"(ages["bob"])
+
+    ages["bob"] = 26
+    print "bob now = {}"(ages["bob"])
+
+    x = nums[0] + nums[2]
+    y = ages["alice"]
+    print "10+30 = {}, alice age = {}"(x, y)
+}

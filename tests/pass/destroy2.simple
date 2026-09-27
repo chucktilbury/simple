@@ -1,0 +1,15 @@
+class Q {
+    public
+    create () {
+        print "c"
+    }
+    public
+    destroy {
+        print "d"
+    }
+}
+start {
+    Q q
+    q = Q.create()
+    q.destroy()
+}

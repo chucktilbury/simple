@@ -1,0 +1,27 @@
+# Simple language example – C++ compiler / LLVM IR backend
+
+namespace Demo {
+    class Greeter {
+        private
+        string name
+
+        public
+        create (string n) {
+            name = n
+        }
+
+
+        public
+        nothing say_hello () {
+            return ()
+        }
+
+        private
+        nothing secret () {
+            return ()
+        }
+    }
+}
+
+start {
+}

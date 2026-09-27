@@ -1,0 +1,20 @@
+# Shared library file – included or imported by other programs
+
+namespace MathLib {
+    class Counter {
+        public
+        int value
+
+        public
+        create () {
+            value = 0
+        }
+
+
+        public
+        nothing inc () {
+            value = value + 1
+            return ()
+        }
+    }
+}

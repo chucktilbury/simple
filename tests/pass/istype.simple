@@ -1,0 +1,21 @@
+class Animal {
+    public
+    create () {
+    }
+}
+class Dog (public Animal) {
+    public
+    create () {
+    }
+}
+start {
+    Dog d
+    d = Dog.create()
+    print "{}"(type(d))
+    if (d is Dog) {
+        print "dog"
+    }
+    if (d is Animal) {
+        print "animal"
+    }
+}

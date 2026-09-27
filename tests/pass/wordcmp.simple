@@ -1,0 +1,4 @@
+start {
+    print "{}"(5 gte 5)
+    print "{}"(5 lte 4)
+}

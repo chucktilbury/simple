@@ -1,0 +1,57 @@
+class Animal {
+    public
+    string kind
+
+    public
+    create () {
+        kind = "animal"
+        print "Animal.create"
+    }
+
+
+    public
+    destroy {
+    }
+    public
+    virtual nothing speak () {
+        print "generic animal"
+        return ()
+    }
+}
+
+class Dog (public Animal) {
+    public
+    string name
+
+    public
+    create (string n) {
+        name = n
+        print "Dog.create {}"(n)
+    }
+
+
+    public
+    virtual nothing speak () {
+        print "{} says woof"(name)
+        return ()
+    }
+}
+
+start {
+    Dog d
+    d = Dog.create("Rex")
+    print "name field = {}"(d.name)
+    d.speak()
+    if (d is Dog) {
+        print "d is Dog"
+    }
+    if (d is Animal) {
+        print "d is Animal"
+    }
+    if (d is Flyer) {
+        print "d is Flyer"
+    }
+    else {
+        print "d is not Flyer"
+    }
+}

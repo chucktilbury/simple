@@ -1,0 +1,5 @@
+include "modules/math_lib.simple"
+
+start {
+    print "included MathLib from modules/math_lib.simple"
+}

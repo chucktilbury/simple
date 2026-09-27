@@ -1,0 +1,20 @@
+# Greeting helpers
+
+namespace Greet {
+    class Greeter {
+        public
+        string name
+
+        public
+        create (string n) {
+            name = n
+        }
+
+
+        public
+        nothing hello () {
+            print "Hello from Greeter, {}!"(name)
+            return ()
+        }
+    }
+}

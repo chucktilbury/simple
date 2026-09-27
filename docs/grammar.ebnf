@@ -1,0 +1,342 @@
+(*
+  Simple language — grammar as implemented by src/Parser.cpp
+  (recursive descent + precedence climbing). Not the original sketch.
+
+  Conventions:
+    'keyword'     reserved word
+    IDENTIFIER    lexer identifier
+    LIT_*         lexer literals
+    { X }         zero or more
+    [ X ]         optional
+    ( A | B )     choice
+    RAW_C         untokenized C until matching '}'
+*)
+
+module
+    = { module_item } [ start_clause ] EOF
+    ;
+
+module_item
+    = include_statement
+    | import_statement
+    | namespace
+    | class_definition
+    | visibility_kw module_item
+    | out_of_class_def
+    ;
+
+visibility_kw
+    = 'public' | 'private' | 'protected'
+    ;
+
+include_statement
+    = 'include' string_literal
+    ;
+
+import_statement
+    = 'import' string_literal [ 'as' IDENTIFIER ]
+    ;
+
+start_clause
+    = 'start' function_body
+    ;
+
+(* ----- names & types ----- *)
+
+compound_name
+    = IDENTIFIER { '.' IDENTIFIER }
+    ;
+
+type_specifier
+    = 'integer' | 'int'
+    | 'boolean' | 'bool'
+    | 'string' | 'dict' | 'list'
+    | 'unsigned' | 'float' | 'nothing'
+    | compound_name
+    ;
+
+(* ----- namespace / class ----- *)
+
+namespace
+    = 'namespace' IDENTIFIER '{' { namespace_item } '}'
+    ;
+
+namespace_item
+    = visibility_kw
+    | class_definition
+    | namespace
+    | out_of_class_def
+    ;
+
+class_definition
+    = 'class' IDENTIFIER [ inheritance_list ] class_body
+    ;
+
+inheritance_list
+    = '(' [ inheritance_item { ',' inheritance_item } ] ')'
+    ;
+
+inheritance_item
+    = [ visibility_kw ] compound_name
+    ;
+
+class_body
+    = '{' { class_item } '}'
+    ;
+
+class_item
+    = visibility_kw
+    | [ 'virtual' ] constructor
+    | [ 'virtual' ] destructor
+      | [ 'virtual' ] type_specifier IDENTIFIER
+          ( '(' [ parameter_list ] ')' [ function_body ]
+          | [ '=' expression ] )
+    ;
+
+constructor
+    = 'create' '(' [ parameter_list ] ')' [ function_body ]
+    ;
+
+destructor
+    = 'destroy' [ function_body ]
+    ;
+
+parameter_list
+    = parameter { ',' parameter }
+    ;
+
+parameter
+    = type_specifier [ IDENTIFIER ]
+    ;
+
+(* Class.method / create Class at module or namespace scope *)
+out_of_class_def
+    = 'create' IDENTIFIER '(' [ parameter_list ] ')' function_body
+    | 'destroy' IDENTIFIER function_body
+    | type_specifier IDENTIFIER [ '.' IDENTIFIER ] '(' [ parameter_list ] ')' function_body
+    ;
+
+(* ----- bodies ----- *)
+
+function_body
+    = '{' { body_item } '}'
+    ;
+
+loop_body
+    = function_body
+    ;
+
+body_item
+    = if_clause
+    | while_clause
+    | for_clause
+    | do_clause
+    | return_statement
+    | raise_statement
+    | print_statement
+    | try_clause
+    | break_statement
+    | continue_statement
+    | inline_statement
+    | yield_statement
+    | exit_statement
+    | data_definition
+    | assignment
+    | expression
+    ;
+
+data_definition
+    = type_specifier IDENTIFIER [ '=' expression ]
+    ;
+
+assignment
+    = expression '=' expression
+    ;
+
+(* ----- statements ----- *)
+
+if_clause
+    = 'if' '(' expression ')' function_body
+      { else_if_clause }
+      [ final_else ]
+    ;
+
+else_if_clause
+    = 'else' [ 'if' ] '(' expression ')' function_body
+    ;
+
+final_else
+    = 'else' '(' ')' function_body
+    | 'else' function_body
+    ;
+
+while_clause
+    = 'while' [ '(' [ expression ] ')' ] loop_body
+    ;
+
+(* for (N as T i)  → count 0..N-1
+   for (gen() as T i) → iterator
+   for (cond) / for () / for  → while-like *)
+for_clause
+    = 'for' [ '(' [ expression [ 'as' [ type_specifier ] IDENTIFIER ] ] ')' ] loop_body
+    ;
+
+do_clause
+    = 'do' loop_body 'while' [ '(' [ expression ] ')' ]
+    ;
+
+return_statement
+    = 'return' [ '(' [ expression ] ')' ]
+    ;
+
+raise_statement
+    = 'raise' '(' compound_name ')'
+    ;
+
+print_statement
+    = 'print' [ '(' ] expression [ ')' ]
+    ;
+
+try_clause
+    = 'try' function_body
+      except_clause { except_clause }
+      [ 'finally' function_body ]
+    ;
+
+except_clause
+    = 'except' '(' compound_name [ 'as' IDENTIFIER ] ')' function_body
+    ;
+
+break_statement    = 'break' ;
+continue_statement = 'continue' ;
+
+yield_statement
+    = 'yield' '(' [ expression ] ')'
+    ;
+
+exit_statement
+    = 'exit' '(' [ expression ] ')'
+    ;
+
+inline_statement
+    = 'inline' [ '(' [ IDENTIFIER { ',' IDENTIFIER } ] ')' ]
+      '{' RAW_C '}'
+    ;
+
+(* ----- expressions ----- *)
+
+expression
+    = unary_or_primary { postfix_index } { binary_op unary_or_primary { postfix_index } }
+    ;
+
+postfix_index
+    = '[' expression ']'
+    ;
+
+(* precedence, low to high:
+     or ||
+     and &&
+     == != equ neq
+     < > <= >= lt gt lte gte
+     + -
+     * / %
+     ^          (right-associative)
+*)
+
+binary_op
+    = 'or' | '||'
+    | 'and' | '&&'
+    | '==' | '!=' | 'equ' | 'neq'
+    | '<' | '>' | '<=' | '>=' | 'lt' | 'gt' | 'lte' | 'gte'
+    | '+' | '-'
+    | '*' | '/' | '%'
+    | '^'
+    ;
+
+unary_or_primary
+    = ( '!' | 'not' | '-' ) unary_or_primary
+    | primary
+    ;
+
+primary
+    = type_of
+    | super_call
+    | cast
+    | grouped
+    | literal [ format_args ]
+    | compound_reference
+    | list_literal
+    | dict_literal
+    ;
+
+type_of
+    = 'type' '(' expression ')'
+    ;
+
+safe_cast
+    = expression 'as' IDENTIFIER
+    ;
+
+
+super_call
+    = 'super' IDENTIFIER '.' ( IDENTIFIER | 'create' )
+      '(' [ expression { ',' expression } ] ')'
+    ;
+
+(* keyword cast, or (ClassName) primary when a primary follows ')' *)
+cast
+    = '(' type_specifier ')' primary
+    | '(' IDENTIFIER ')' primary
+    ;
+
+grouped
+    = '(' expression ')'
+    ;
+
+literal
+    = 'null' | LIT_INT | LIT_UNS | LIT_FLOAT | LIT_BOOL | string_literal
+    ;
+
+string_literal
+    = LIT_SSTR | LIT_DSTR
+    ;
+
+format_args
+    = '(' [ format_arg { ',' format_arg } ] ')'
+    ;
+
+format_arg
+    = IDENTIFIER '=' expression
+    | expression
+    ;
+
+compound_reference
+    = ( IDENTIFIER | 'create' )
+      [ '(' [ expression { ',' expression } ] ')' ]
+      { '.' ( IDENTIFIER | 'create' )
+            [ '(' [ expression { ',' expression } ] ')' ] }
+    ;
+
+list_literal
+    = '[' [ expression { ',' expression } ] ']'
+    ;
+
+dict_literal
+    = '{' [ dict_item { ',' dict_item } ] '}'
+    ;
+
+dict_item
+    = ( IDENTIFIER | expression ) ':' expression
+    ;
+
+(* ----- lexer extras (not productions, but accepted tokens) -----
+
+  Comments:  # ...eol   // ...eol   /* ... */
+  Word ops:  and or not lt gt lte gte equ neq
+  Symbols:   || && == != <= >=
+  Keywords also include: start include import as namespace class
+    public private protected create super virtual
+    integer int boolean bool string dict list unsigned float nothing
+    type inline raise print break continue yield return
+    if else for while do try except finally exit
+*)

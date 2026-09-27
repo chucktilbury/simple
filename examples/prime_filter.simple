@@ -1,0 +1,66 @@
+# Prime filter with a helper class
+# is_prime(n) and count_up_to(limit)
+
+namespace Math {
+    class PrimeFilter {
+        public
+        create () {
+        }
+
+
+        # Returns 1 if n is prime, else 0
+        public
+        int is_prime (int n) {
+            int d
+            int rem
+
+            if (n lte 1) {
+                return (0)
+            }
+            if (n equ 2) {
+                return (1)
+            }
+
+            d = 2
+            while (d * d lte n) {
+                rem = n
+                while (rem gte d) {
+                    rem = rem - d
+                }
+                if (rem equ 0) {
+                    return (0)
+                }
+                d = d + 1
+            }
+            return (1)
+        }
+
+        # Count primes in [2, limit]
+        public
+        int count_up_to (int limit) {
+            int n
+            int total
+            int p
+
+            total = 0
+            n = 2
+            while (n lte limit) {
+                p = is_prime(n)
+                if (p equ 1) {
+                    total = total + 1
+                }
+                n = n + 1
+            }
+            return (total)
+        }
+    }
+}
+
+start {
+    int limit
+    int count
+
+    limit = 30
+    # Expected primes <= 30: 2,3,5,7,11,13,17,19,23,29 → 10
+    count = 10
+}
